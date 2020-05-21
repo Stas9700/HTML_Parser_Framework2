@@ -1,0 +1,66 @@
+﻿<Window x:Class="HTML_Parser_Framework.VIEW.LinkCounterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:HTML_Parser_Framework.VIEW"
+        mc:Ignorable="d"
+        Title="Подсчет ссылок" Height="450" Width="800">
+    <Grid Background="#FF303030">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="30*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        
+        <!--Список всех URl-->
+        <TextBlock Text="Список адресов" Style="{DynamicResource Block}"/>
+        <DataGrid ItemsSource="{Binding Pages}" Grid.Row="1" Grid.RowSpan="3" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="URL адрес ресурса" Width="75*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding URL}" TextWrapping="Wrap" Style="{DynamicResource SimpleTextBox}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Кол-во ссылок" Binding="{Binding Count}" Width="25*" Foreground="Yellow"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <!--Панель настроек программы-->
+        <TextBlock Text="Настройка параметров" Grid.Column="1" Style="{DynamicResource Block}"/>
+        <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="3">
+            <WrapPanel>
+                <Button Margin="5" Command="{Binding ChooseFileCommand}" Style="{StaticResource MaterialDesignRaisedAccentButton}" >
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="20" Height="26">
+                        <materialDesign:PackIcon Kind="File" VerticalAlignment="Stretch" Width="20" Height="26"/>
+                    </StackPanel>
+                </Button>
+                <Button Margin="5" Command="{Binding CountCommand}" Style="{StaticResource MaterialDesignRaisedAccentButton}" >
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="110" Height="26">
+                        <materialDesign:PackIcon Kind="Counter" VerticalAlignment="Stretch" Width="20"  Height="26"/>
+                        <TextBlock Text="{Binding ButtonText, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" TextAlignment="Center" Height="20"/>
+                    </StackPanel>
+                </Button>
+                <!--<Button Margin="5" Command="{Binding CancelCommand}" Style="{StaticResource MaterialDesignRaisedAccentButton}" >
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="20" Height="26">
+                        <materialDesign:PackIcon Kind="Cancel" VerticalAlignment="Stretch" Width="20" Height="26"/>
+                    </StackPanel>
+                </Button>-->
+            </WrapPanel>
+
+            <RadioButton Content="Простой поиск" GroupName="SearchType" IsChecked="{Binding SimpleFind, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource MyRadioButton}"/>
+            <RadioButton Content="Поиск через регулярные выражения" GroupName="SearchType" IsChecked="{Binding RegexFind, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource MyRadioButton}"/>
+
+            <ProgressBar Visibility="Visible" Margin="10" Width="50" Height="50" Style="{StaticResource MaterialDesignCircularProgressBar}" x:Name="DeterminateCircularProgress" Minimum="0" Maximum="{Binding URL_All ,UpdateSourceTrigger=PropertyChanged}" Value="{Binding URL_Counter ,UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+    </Grid>
+</Window>
